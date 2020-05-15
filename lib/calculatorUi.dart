@@ -7,15 +7,19 @@ class CalculatorUI extends StatefulWidget {
 
 class _CalculatorUIState extends State<CalculatorUI> {
 
-  Widget buildButton(val){
+  Widget buildButton(String value){
     return Expanded(
-      child: OutlineButton(
+      child: FlatButton(
         padding: EdgeInsets.all(24),
         child: Text(
-          val,
+          value,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey[600]
+          ),
         ),
-        onPressed: (){},
-        color: Colors.grey,
+        onPressed: (){}
       ),
     );
   }
@@ -31,7 +35,17 @@ class _CalculatorUIState extends State<CalculatorUI> {
       body: Container(
         child: Column(
           children: <Widget>[
-            Text("0"),
+            Container(
+              alignment: Alignment.bottomRight,
+              padding: EdgeInsets.symmetric(vertical: 24,horizontal: 12),
+                child: Text(
+                    "0",
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold
+                  ),
+                )
+            ),
             Expanded(
               child: Divider(),
             ),
@@ -65,8 +79,21 @@ class _CalculatorUIState extends State<CalculatorUI> {
                   children: <Widget>[
                     buildButton("."),
                     buildButton("0"),
-                    buildButton("C"),
+                    buildButton("(-)"),
                     buildButton("/")
+                  ],
+                ),
+
+                Row(
+                  children: <Widget>[
+                    buildButton("="),
+                    Expanded(
+                      child: FlatButton(
+                      padding: EdgeInsets.all(24),
+                      child: IconButton(icon: Icon(Icons.backspace),),
+                        onPressed: (){},
+                        ),
+                      )
                   ],
                 ),
               ],

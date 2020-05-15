@@ -7,6 +7,58 @@ class CalculatorUI extends StatefulWidget {
 
 class _CalculatorUIState extends State<CalculatorUI> {
 
+  String output="0";
+
+  String _tempOutput="";
+  double num1=0.0;
+  double num2=0.0;
+  String operand="";
+  String op="";
+  RegExp regExp=new RegExp("[+|/|x|\-]");
+
+  var temp;
+
+  buttonPressed(String btnVal){
+    if(btnVal=="+"||btnVal=="-"||btnVal=="/"||btnVal=="x") {
+      setState(() {
+        op = regExp.stringMatch(_tempOutput);
+        operand = btnVal;
+        if (_tempOutput != "0") {
+          num1 = double.parse(_tempOutput);
+          print(num1);
+          _tempOutput = _tempOutput + operand;
+          output = _tempOutput;
+          if (regExp.hasMatch(_tempOutput)) {
+            _tempOutput = "";
+          }
+        }
+      });
+    }else if(btnVal=="="){
+      
+    }else if(operand.isNotEmpty){
+      setState(() {
+        if(_tempOutput!="0") {
+
+          num2 = num2 * 10 + double.parse(btnVal);
+          _tempOutput = output + btnVal;
+          output=output+btnVal;
+        }
+        print(num2);
+      });
+    }else if(btnVal=="(-)"){
+
+    }else if(btnVal=="."){
+
+    }else if(operand.isEmpty){
+      setState(() {
+        if(_tempOutput!="0"){
+          _tempOutput=_tempOutput+btnVal;
+          output=_tempOutput;
+        }
+      });
+    }
+  }
+
   Widget buildButton(String value){
     return Expanded(
       child: FlatButton(
@@ -19,7 +71,9 @@ class _CalculatorUIState extends State<CalculatorUI> {
             color: Colors.grey[600]
           ),
         ),
-        onPressed: (){}
+        onPressed: (){
+          buttonPressed(value);
+        }
       ),
     );
   }
@@ -39,7 +93,7 @@ class _CalculatorUIState extends State<CalculatorUI> {
               alignment: Alignment.bottomRight,
               padding: EdgeInsets.symmetric(vertical: 24,horizontal: 12),
                 child: Text(
-                    "0",
+                    output,
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold
@@ -79,7 +133,7 @@ class _CalculatorUIState extends State<CalculatorUI> {
                   children: <Widget>[
                     buildButton("."),
                     buildButton("0"),
-                    buildButton("(-)"),
+                    buildButton("( )"),
                     buildButton("/")
                   ],
                 ),
@@ -89,9 +143,39 @@ class _CalculatorUIState extends State<CalculatorUI> {
                     buildButton("="),
                     Expanded(
                       child: FlatButton(
+                        padding: EdgeInsets.all(24),
+                        child: Text(
+                            "C",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey[600]
+                            ),
+                        ),
+                        onPressed: (){
+                            setState(() {
+                              _tempOutput="";
+                              num1=0.0;
+                              num2=0.0;
+                              operand="";
+                              output="0";
+                            });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: FlatButton(
                       padding: EdgeInsets.all(24),
-                      child: IconButton(icon: Icon(Icons.backspace),),
-                        onPressed: (){},
+                      child: Icon(
+                          Icons.backspace,
+                        color: Colors.grey[600],
+                      ),
+                        onPressed: (){
+                        setState(() {
+                          output=output.substring(0,output.length-1);
+                          print(output);
+                        });
+                        },
                         ),
                       )
                   ],

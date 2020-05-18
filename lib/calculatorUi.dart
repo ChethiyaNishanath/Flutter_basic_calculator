@@ -13,15 +13,17 @@ class _CalculatorUIState extends State<CalculatorUI> {
   double num1=0.0;
   double num2=0.0;
   String operand="";
-  String op="";
+  //String op="";
   RegExp regExp=new RegExp("[+|/|x|\-]");
+
+  String result="";
 
   var temp;
 
   buttonPressed(String btnVal){
     if(btnVal=="+"||btnVal=="-"||btnVal=="/"||btnVal=="x") {
       setState(() {
-        op = regExp.stringMatch(_tempOutput);
+        //op = regExp.stringMatch(_tempOutput);
         operand = btnVal;
         if (_tempOutput != "0") {
           num1 = double.parse(_tempOutput);
@@ -34,6 +36,37 @@ class _CalculatorUIState extends State<CalculatorUI> {
         }
       });
     }else if(btnVal=="="){
+      switch(operand){
+        case "+":{
+          setState(() {
+            result=(num1+num2).toString();
+            num1=num2=0.0;
+          });
+        }
+        break;
+        case "-":{
+          setState(() {
+            result=(num1-num2).toString();
+            num1=num2=0.0;
+          });
+        }
+        break;
+        case "/":{
+          setState(() {
+            result=(num1/num2).toString();
+            num1=num2=0.0;
+          });
+        }
+        break;
+        case "x":{
+
+          setState(() {
+            result=(num1*num2).toString();
+            num1=num2=0.0;
+          });
+        }
+        break;
+      }
       
     }else if(operand.isNotEmpty){
       setState(() {
@@ -96,7 +129,18 @@ class _CalculatorUIState extends State<CalculatorUI> {
                     output,
                   style: TextStyle(
                     fontSize: 40,
-                    fontWeight: FontWeight.bold
+                    fontWeight: FontWeight.w300
+                  ),
+                )
+            ),
+            Container(
+                alignment: Alignment.bottomRight,
+                padding: EdgeInsets.symmetric(vertical: 24,horizontal: 12),
+                child: Text(
+                  result,
+                  style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w300
                   ),
                 )
             ),
@@ -159,6 +203,7 @@ class _CalculatorUIState extends State<CalculatorUI> {
                               num2=0.0;
                               operand="";
                               output="0";
+                              result="";
                             });
                         },
                       ),
